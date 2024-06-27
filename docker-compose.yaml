@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgresql-gml-production-1.0
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5129:5129"
+    restart: always
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    build: .
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    ports:
+      - "3130:3000"  # Mapping container's port 3000 to host's port 3130
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+
+networks:
+  backend:
+
+volumes:
+  pgdata:
