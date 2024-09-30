@@ -1,9 +1,9 @@
-version: '3.8'
+version: '3.3'
 
 services:
   postgres:
     image: postgres:latest
-    container_name: postgresql-gml-production-1.0
+    container_name: postgresql
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -11,7 +11,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
-      - "5129:5129"
+      - "5432:5432"
     restart: always
     networks:
       - backend
